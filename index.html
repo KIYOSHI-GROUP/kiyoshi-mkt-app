@@ -200,6 +200,113 @@ select.finput{cursor:pointer}
 .btn-sm{font-size:12px;color:var(--text-tertiary);background:none;border:1px solid var(--sep);border-radius:var(--r-sm);padding:5px 13px;cursor:pointer;font-family:var(--font);transition:all .15s;margin-top:10px;margin-right:8px}
 .btn-sm:hover{border-color:var(--accent);color:var(--accent)}
 .btn-sm.danger:hover{border-color:var(--red);color:var(--red)}
+
+/* ════════ PAGE TABS (Trang 1–4) ════════ */
+.page-tabs{display:flex;gap:0;border:1px solid var(--sep);border-radius:var(--r-md);overflow:hidden;margin-bottom:18px;background:var(--surface-2)}
+.page-tab{flex:1;padding:9px 6px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;background:transparent;color:var(--text-secondary);border:none;font-family:var(--font);transition:all .15s;border-right:1px solid var(--sep);line-height:1.3}
+.page-tab:last-child{border-right:none}
+.page-tab.active{background:var(--surface);color:var(--text-primary);font-weight:600}
+.page-tab .tab-num{display:block;font-size:10px;color:var(--text-tertiary);font-weight:400;margin-bottom:2px}
+.page-tab.active .tab-num{color:var(--accent)}
+
+/* ════════ PAGE PANELS ════════ */
+.page-panel{display:none}
+.page-panel.active{display:block}
+
+/* ════════ TRANG 3 — THỰC THI ════════ */
+.exec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.exec-stat{background:var(--surface);border-radius:var(--r-lg);padding:13px 15px;box-shadow:var(--sh-sm)}
+.exec-stat-lbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--text-tertiary);margin-bottom:3px}
+.exec-stat-val{font-size:24px;font-weight:600;letter-spacing:-.5px;line-height:1}
+.exec-stat-sub{font-size:11px;color:var(--text-secondary);margin-top:2px}
+
+.exec-card{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh-sm);margin-bottom:9px;overflow:hidden}
+.exec-hd{display:grid;grid-template-columns:10px 1fr auto auto;gap:10px;align-items:center;padding:13px 18px;cursor:pointer;user-select:none;transition:background .12s}
+.exec-hd:hover{background:var(--surface-2)}
+.exec-body{display:none;padding:16px 20px 20px;border-top:1px solid var(--sep);flex-direction:column;gap:14px}
+.exec-body.open{display:flex}
+
+.platform-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.plat-item{background:var(--surface-2);border-radius:var(--r-md);padding:10px 8px;text-align:center;cursor:pointer;transition:all .15s;border:1.5px solid transparent;position:relative}
+.plat-item:hover{border-color:var(--sep)}
+.plat-item.done-plat{border-color:var(--green);background:var(--green-light)}
+.plat-item.done-plat .plat-check{opacity:1}
+.plat-icon{font-size:20px;display:block;margin-bottom:4px}
+.plat-name{font-size:10px;font-weight:500;color:var(--text-secondary);display:block}
+.plat-item.done-plat .plat-name{color:#1a6b30}
+.plat-check{position:absolute;top:5px;right:5px;width:14px;height:14px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;font-size:8px;color:#fff}
+
+.link-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.link-item{display:flex;flex-direction:column;gap:4px}
+.link-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-tertiary)}
+.link-row{display:flex;gap:6px;align-items:center}
+.link-check{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--surface-3);background:var(--surface);flex-shrink:0;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.link-check.checked{background:var(--green);border-color:var(--green)}
+.link-check.checked::after{content:'';width:4px;height:7px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px);display:block}
+
+.ads-row{display:grid;grid-template-columns:auto 1fr auto 1fr auto;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--sep)}
+.ads-row:last-child{border-bottom:none}
+.ads-toggle{width:36px;height:20px;border-radius:20px;border:1.5px solid var(--sep);background:var(--surface-3);cursor:pointer;position:relative;transition:all .2s;flex-shrink:0}
+.ads-toggle.on{background:var(--accent);border-color:var(--accent)}
+.ads-toggle::after{content:'';position:absolute;width:14px;height:14px;background:#fff;border-radius:50%;top:1px;left:1px;transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.ads-toggle.on::after{transform:translateX(16px)}
+
+.story-kols{display:flex;flex-direction:column;gap:8px}
+.kol-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--sep)}
+.kol-row:last-child{border-bottom:none}
+
+/* ════════ TRANG 4 — TỔNG KẾT ════════ */
+.summary-tabs{display:flex;border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--sep);margin-bottom:14px;background:var(--surface-2)}
+.sum-tab{flex:1;padding:8px 4px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;background:transparent;color:var(--text-secondary);border:none;font-family:var(--font);transition:all .15s;border-right:1px solid var(--sep)}
+.sum-tab:last-child{border-right:none}
+.sum-tab.on{background:var(--surface);color:var(--text-primary);font-weight:600}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.kpi-card{background:var(--surface);border-radius:var(--r-lg);padding:15px;box-shadow:var(--sh-sm)}
+.kpi-lbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--text-tertiary);margin-bottom:6px}
+.kpi-val{font-size:26px;font-weight:600;letter-spacing:-.5px;line-height:1;margin-bottom:3px}
+.kpi-sub{font-size:11px;color:var(--text-secondary)}
+.kpi-input-val{width:100%;font-size:22px;font-weight:600;background:transparent;border:none;outline:none;color:inherit;font-family:var(--font);letter-spacing:-.5px;padding:0}
+.kpi-input-val::placeholder{color:var(--surface-3)}
+
+.post-result-row{display:grid;grid-template-columns:36px 1fr 70px 70px 70px 70px;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--sep);font-size:13px}
+.post-result-row:last-child{border-bottom:none}
+.post-result-row.header{background:var(--surface-2);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-tertiary);padding:8px 14px}
+.result-input{width:100%;padding:5px 8px;border:1px solid var(--sep);border-radius:var(--r-sm);font-size:12px;font-family:var(--font);background:var(--surface-2);outline:none;text-align:right;font-weight:500}
+.result-input:focus{border-color:var(--accent);background:var(--surface)}
+
+.reward-table{width:100%;border-collapse:separate;border-spacing:0}
+.reward-table th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-tertiary);padding:8px 14px;background:var(--surface-2);text-align:left;border-bottom:1px solid var(--sep)}
+.reward-table td{font-size:13px;padding:10px 14px;border-bottom:1px solid var(--sep);vertical-align:middle}
+.reward-table tr:last-child td{border-bottom:none}
+.reward-tier{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px}
+.tier-s{background:#fff9e6;color:#8b6a00}
+.tier-a{background:var(--green-light);color:#1a6b30}
+.tier-b{background:var(--accent-light);color:#0055d4}
+.tier-c{background:var(--surface-2);color:var(--text-secondary)}
+.reward-val{font-size:14px;font-weight:600;color:var(--text-primary)}
+.reward-note{font-size:11px;color:var(--text-tertiary);margin-top:2px}
+
+.rank-card{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh-sm);margin-bottom:9px;overflow:hidden}
+.rank-hd{display:grid;grid-template-columns:32px 1fr auto auto;gap:10px;align-items:center;padding:14px 18px}
+.rank-num{width:26px;height:26px;border-radius:50%;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rank-1{background:#fff9e6;color:#8b6a00}
+.rank-2{background:#f0f0f0;color:#555}
+.rank-3{background:#fff2ec;color:#b05a2f}
+.rank-n{background:var(--surface-2);color:var(--text-tertiary)}
+.rank-name{font-size:13px;font-weight:500}
+.rank-role{font-size:11px;color:var(--text-tertiary);margin-top:1px}
+.rank-score{font-size:20px;font-weight:600;letter-spacing:-.3px;color:var(--text-primary)}
+.rank-badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;margin-left:6px}
+
+.eval-section{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh-sm);padding:18px 20px;margin-bottom:10px}
+.eval-sec-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-tertiary);margin-bottom:12px}
+.star-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--sep)}
+.star-row:last-child{border-bottom:none}
+.star-label{font-size:13px;font-weight:500}
+.stars{display:flex;gap:4px}
+.star{font-size:18px;cursor:pointer;opacity:.25;transition:opacity .15s;user-select:none}
+.star.lit{opacity:1}
 </style>
 </head>
 <body>
@@ -293,6 +400,20 @@ select.finput{cursor:pointer}
     <span class="cal-topbar-title" id="cal-topbar-title"></span>
   </div>
 
+
+  <!-- ════ PAGE TABS ════ -->
+  <div class="page-tabs" id="page-tabs">
+    <button class="page-tab active" onclick="switchPage(1,this)">
+      <span class="tab-num">Trang 1–2</span>📋 Lập kế hoạch
+    </button>
+    <button class="page-tab" onclick="switchPage(3,this)">
+      <span class="tab-num">Trang 3</span>📡 Thực thi
+    </button>
+    <button class="page-tab" onclick="switchPage(4,this)">
+      <span class="tab-num">Trang 4</span>🏆 Tổng kết
+    </button>
+  </div>
+  <div id="page-1" class="page-panel active">
   <div class="doc-header">
     <div class="doc-tag" id="cal-tag"></div>
     <div class="doc-title" id="cal-title"></div>
@@ -342,6 +463,262 @@ select.finput{cursor:pointer}
     </div>
   </div>
   <div class="footer-copy" id="cal-footer"></div>
+
+  </div><!-- /page-1 -->
+
+
+  <!-- ════════════════════ TRANG 3: THỰC THI SAU ĐĂNG ════════════════════ -->
+  <div id="page-3" class="page-panel">
+
+    <div class="doc-header">
+      <div class="doc-tag">📡 Thực thi sau đăng</div>
+      <div class="doc-title" id="p3-title">—</div>
+      <div class="doc-sub">Reup đa nền tảng · Chia sẻ hội nhóm · Story · Chạy Ads — tick hoàn thành từng bài.</div>
+    </div>
+
+    <div class="exec-grid">
+      <div class="exec-stat"><div class="exec-stat-lbl">Bài hoàn thành</div><div class="exec-stat-val" id="ex-done" style="color:var(--green)">0</div><div class="exec-stat-sub">đã thực thi đủ</div></div>
+      <div class="exec-stat"><div class="exec-stat-lbl">Đang xử lý</div><div class="exec-stat-val" id="ex-doing" style="color:var(--orange)">0</div><div class="exec-stat-sub">còn thiếu việc</div></div>
+      <div class="exec-stat"><div class="exec-stat-lbl">Chưa bắt đầu</div><div class="exec-stat-val" id="ex-todo" style="color:var(--text-secondary)">0</div><div class="exec-stat-sub">bài chưa đăng</div></div>
+    </div>
+
+    <div class="prog-card" style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:13px;font-weight:500">Tiến độ thực thi</span>
+        <span style="font-size:13px;font-weight:600;color:var(--accent)" id="ex-pct">0%</span>
+      </div>
+      <div class="prog-bg"><div class="prog-fill" id="ex-prog-fill"></div></div>
+    </div>
+
+    <div id="exec-posts-wrap"></div>
+
+    <div class="footer-card">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary);margin-bottom:8px">Quy định thực thi</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.8">
+        📌 <strong>CVN</strong> reup + chia sẻ trong vòng <strong>2 giờ</strong> sau khi bài main đăng.<br>
+        📌 <strong>PTP</strong> tick duyệt từng bài trước khi báo cáo TRP.<br>
+        📌 Ads phải được TRP phê duyệt ngân sách trước khi bật — không tự ý tăng budget.<br>
+        📌 Story các kênh phải đăng cùng ngày, không đăng muộn hơn 4 tiếng.
+      </div>
+    </div>
+
+  </div><!-- /page-3 -->
+
+  <!-- ════════════════════ TRANG 4: TỔNG KẾT + BẢNG THƯỞNG ════════════════════ -->
+  <div id="page-4" class="page-panel">
+
+    <div class="doc-header">
+      <div class="doc-tag">🏆 Tổng kết + Bảng thưởng</div>
+      <div class="doc-title" id="p4-title">—</div>
+      <div class="doc-sub">Chỉ số hiệu quả sau 1 tháng · Xếp hạng thành viên · Bảng thưởng chính thức</div>
+    </div>
+
+    <div class="summary-tabs">
+      <button class="sum-tab on" onclick="sumTab('kpi',this)">📊 KPI & Hiệu quả</button>
+      <button class="sum-tab" onclick="sumTab('rank',this)">🏅 Xếp hạng thành viên</button>
+      <button class="sum-tab" onclick="sumTab('reward',this)">💰 Bảng thưởng</button>
+      <button class="sum-tab" onclick="sumTab('eval',this)">✍️ Đánh giá</button>
+    </div>
+
+    <!-- KPI PANEL -->
+    <div id="sum-kpi" class="xpanel on" style="display:flex;flex-direction:column;gap:10px">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-lbl">Tổng Reach</div>
+          <input class="kpi-input-val" id="kpi-reach" type="number" placeholder="0" style="color:var(--accent)" oninput="calcKpi()">
+          <div class="kpi-sub">lượt tiếp cận</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-lbl">Tổng Tương tác</div>
+          <input class="kpi-input-val" id="kpi-engage" type="number" placeholder="0" style="color:var(--purple)" oninput="calcKpi()">
+          <div class="kpi-sub">like + cmt + share</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-lbl">Tỷ lệ Eng Rate</div>
+          <div class="kpi-val" id="kpi-engrate" style="color:var(--green)">—</div>
+          <div class="kpi-sub">Tự động tính</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-lbl">Tổng Chi Ads</div>
+          <input class="kpi-input-val" id="kpi-adspend" type="number" placeholder="0" style="color:var(--red)" oninput="calcKpi()">
+          <div class="kpi-sub">VND</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-lbl">Leads / Đơn hàng</div>
+          <input class="kpi-input-val" id="kpi-leads" type="number" placeholder="0" style="color:var(--orange)" oninput="calcKpi()">
+          <div class="kpi-sub">từ chiến dịch</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-lbl">CPL (Cost/Lead)</div>
+          <div class="kpi-val" id="kpi-cpl" style="color:var(--text-primary)">—</div>
+          <div class="kpi-sub">Tự động tính</div>
+        </div>
+      </div>
+
+      <div class="eval-section">
+        <div class="eval-sec-title">Chi tiết từng bài — Insight 1 tháng</div>
+        <div class="post-result-row header">
+          <span>#</span><span>Hook</span><span>Reach</span><span>Tương tác</span><span>CMT</span><span>Eng %</span>
+        </div>
+        <div id="kpi-post-rows"><!-- render by JS --></div>
+      </div>
+
+      <div class="eval-section">
+        <div class="eval-sec-title">Nhận xét tổng kết</div>
+        <div class="fgroup" style="margin-bottom:10px">
+          <div class="flbl2">Điểm mạnh của chiến dịch</div>
+          <textarea class="fi" rows="3" id="kpi-strength" placeholder="Bài nào hiệu quả nhất? Lý do?..."></textarea>
+        </div>
+        <div class="fgroup" style="margin-bottom:10px">
+          <div class="flbl2">Điểm cần cải thiện</div>
+          <textarea class="fi" rows="3" id="kpi-improve" placeholder="Bài nào kém nhất? Sai ở đâu?..."></textarea>
+        </div>
+        <div class="fgroup">
+          <div class="flbl2">Đề xuất cho chiến dịch tiếp theo</div>
+          <textarea class="fi" rows="2" id="kpi-next" placeholder="Thay đổi hook / kênh / thời gian đăng?..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- RANK PANEL -->
+    <div id="sum-rank" class="xpanel" style="display:none;flex-direction:column;gap:10px">
+      <div class="warn-box">⚠️ <div style="font-size:13px;color:#7d4300;line-height:1.6">Xếp hạng dựa trên điểm tổng hợp: <strong>Hoàn thành đúng hạn (40%) + Chất lượng thực thi (30%) + Insight (30%)</strong>. TRP chấm điểm và xác nhận.</div></div>
+
+      <div id="rank-cards-wrap" style="display:flex;flex-direction:column;gap:8px">
+        <!-- render by JS -->
+      </div>
+
+      <div class="eval-section">
+        <div class="eval-sec-title">Chấm điểm thủ công — TRP</div>
+        <div style="display:grid;gap:10px">
+          <div id="member-score-rows"><!-- render by JS --></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REWARD PANEL -->
+    <div id="sum-reward" class="xpanel" style="display:none;flex-direction:column;gap:10px">
+      <div class="eval-section">
+        <div class="eval-sec-title">Bảng thưởng chính thức — C02-PMKT</div>
+        <table class="reward-table" style="width:100%;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--sep)">
+          <thead>
+            <tr>
+              <th>Hạng</th><th>Điều kiện</th><th>Thưởng (VND)</th><th>Hiện vật</th><th>Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="reward-tier tier-s">S · Xuất sắc</span></td>
+              <td style="font-size:12px">≥ 90 điểm · 0 bài trễ hạn · Eng Rate ≥ 5%</td>
+              <td><div class="reward-val">500,000</div><div class="reward-note">+ Bằng khen TRP</div></td>
+              <td style="font-size:12px">Áo đồng phục Hoshi + Voucher ăn</td>
+              <td style="font-size:12px">Xét mỗi chiến dịch</td>
+            </tr>
+            <tr>
+              <td><span class="reward-tier tier-a">A · Giỏi</span></td>
+              <td style="font-size:12px">75–89 điểm · ≤ 1 bài trễ · Eng Rate ≥ 3%</td>
+              <td><div class="reward-val">300,000</div><div class="reward-note">+ Giấy khen nội bộ</div></td>
+              <td style="font-size:12px">Voucher ăn 200k</td>
+              <td style="font-size:12px">Xét mỗi chiến dịch</td>
+            </tr>
+            <tr>
+              <td><span class="reward-tier tier-b">B · Đạt</span></td>
+              <td style="font-size:12px">60–74 điểm · ≤ 2 bài trễ</td>
+              <td><div class="reward-val">150,000</div><div class="reward-note"></div></td>
+              <td style="font-size:12px">—</td>
+              <td style="font-size:12px">Xét mỗi chiến dịch</td>
+            </tr>
+            <tr>
+              <td><span class="reward-tier tier-c">C · Cần cải thiện</span></td>
+              <td style="font-size:12px">&lt; 60 điểm hoặc ≥ 3 bài trễ</td>
+              <td><div class="reward-val">Không thưởng</div></td>
+              <td style="font-size:12px">—</td>
+              <td style="font-size:12px">Gặp TRP 1-1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="eval-section">
+        <div class="eval-sec-title">Quyết định thưởng chiến dịch này</div>
+        <div id="reward-decision-wrap" style="display:flex;flex-direction:column;gap:10px">
+          <!-- render by JS -->
+        </div>
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--sep);display:flex;gap:10px;align-items:center">
+          <div style="flex:1">
+            <div class="flbl2" style="margin-bottom:4px">Xác nhận TRP</div>
+            <input class="fi" placeholder="Ký tên / ghi chú xác nhận..." id="reward-confirm">
+          </div>
+          <div>
+            <div class="flbl2" style="margin-bottom:4px">Ngày duyệt</div>
+            <input class="fi" type="date" id="reward-date" style="width:140px">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVAL PANEL -->
+    <div id="sum-eval" class="xpanel" style="display:none;flex-direction:column;gap:10px">
+      <div class="eval-section">
+        <div class="eval-sec-title">Đánh giá thực thi — TRP chấm</div>
+        <div id="eval-stars-wrap"><!-- render by JS --></div>
+      </div>
+
+      <div class="eval-section">
+        <div class="eval-sec-title">Tóm tắt cuối chiến dịch</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+          <div class="fgroup">
+            <div class="flbl2">Đánh giá tổng thể</div>
+            <select class="fi" id="eval-overall">
+              <option value="">— Chọn —</option>
+              <option>🟢 Xuất sắc — vượt mong đợi</option>
+              <option>🔵 Tốt — đạt kế hoạch</option>
+              <option>🟡 Trung bình — cần cải thiện</option>
+              <option>🔴 Kém — không đạt</option>
+            </select>
+          </div>
+          <div class="fgroup">
+            <div class="flbl2">Đề xuất nhân sự</div>
+            <select class="fi" id="eval-hr">
+              <option value="">— Chọn —</option>
+              <option>⬆️ Đề xuất tăng lương / thăng chức</option>
+              <option>✅ Duy trì — hoàn thành tốt</option>
+              <option>📋 Cần đào tạo thêm</option>
+              <option>⚠️ Cảnh cáo / Xem xét lại</option>
+            </select>
+          </div>
+        </div>
+        <div class="fgroup">
+          <div class="flbl2">Ghi chú tổng kết từ TRP</div>
+          <textarea class="fi" rows="4" id="eval-note" placeholder="Nhận xét tổng thể về nhân sự, quy trình, và những điều cần điều chỉnh cho chiến dịch sau..."></textarea>
+        </div>
+      </div>
+
+      <div class="eval-section" style="background:var(--accent-light);border:1px solid rgba(0,122,255,.15)">
+        <div class="eval-sec-title" style="color:var(--accent)">Export & Báo cáo lên C02-GDTH</div>
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.7;margin-bottom:12px">
+          Sau khi hoàn tất đánh giá — in file này hoặc chụp screenshot toàn trang để gửi Giám đốc Tổng hợp (C02-GDTH) theo lịch báo cáo tháng.
+        </div>
+        <button class="btn-new" onclick="window.print()" style="max-width:260px;padding:10px 20px;font-size:13px">🖨 In / Xuất báo cáo PDF</button>
+      </div>
+    </div>
+
+    <div class="footer-card">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary);margin-bottom:8px">Quy định tổng kết</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.8">
+        📌 Tổng kết bắt buộc trong vòng <strong>7 ngày</strong> sau khi bài cuối đăng.<br>
+        📌 KPI phải được TRP xác nhận trước khi chuyển lên GDTH.<br>
+        📌 Bảng thưởng được phê duyệt và chi trả cùng kỳ lương tháng sau.
+      </div>
+      <div style="margin-top:12px">
+        <button class="btn-sm" onclick="switchPage(3,document.querySelector('.page-tab:nth-child(2)'))">← Trang 3</button>
+        <button class="btn-sm" onclick="goHome()">← Về trang chủ</button>
+      </div>
+    </div>
+    <div class="footer-copy">KIYOSHI Group · Phòng Marketing C02-PMKT · Trang 4 · Tổng kết chiến dịch</div>
+
+  </div><!-- /page-4 -->
+
 </div>
 
 <script>
@@ -942,6 +1319,406 @@ function countHt(campId, postId) {
   if(!ta||!el)return;
   const n=ta.value.trim().split(/\s+/).filter(w=>w.startsWith('#')).length;
   el.textContent=`${n} hashtag`;
+}
+
+// ══════════════════════════════════
+// PAGE NAVIGATION
+// ══════════════════════════════════
+function switchPage(n, btn) {
+  [1,3,4].forEach(i => {
+    const panel = document.getElementById('page-'+i);
+    if(panel) panel.classList.toggle('active', i===n);
+  });
+  document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  window.scrollTo(0,0);
+  if(n===3) renderExec(activeCampaignId);
+  if(n===4) renderSummary(activeCampaignId);
+}
+
+// ══════════════════════════════════
+// TRANG 3 — THỰC THI
+// ══════════════════════════════════
+const PLATFORMS = [
+  {key:'fb', icon:'👥', name:'Facebook'},
+  {key:'ytb', icon:'▶️', name:'YouTube'},
+  {key:'ig', icon:'📸', name:'Instagram'},
+  {key:'threads', icon:'🔗', name:'Threads'},
+  {key:'tiktok', icon:'🎵', name:'TikTok'},
+];
+const SHARE_GROUPS = [
+  {key:'grp_taphoan', name:'Nhóm nội bộ Tập Đoàn', color:'#007aff'},
+  {key:'grp_cong_dong', name:'Nhóm cộng đồng / Zalo KH', color:'#34c759'},
+  {key:'grp_story_fb', name:'Story Facebook chính thức', color:'#ff9500'},
+  {key:'grp_story_ig', name:'Story Instagram brand', color:'#af52de'},
+  {key:'grp_story_tt', name:'Story TikTok brand', color:'#ff3b30'},
+];
+
+function getExecState(campId, postId) {
+  const c = getCampaign(campId);
+  if(!c.execState) c.execState = {};
+  if(!c.execState[postId]) {
+    c.execState[postId] = {
+      platforms: {}, shareGroups: {},
+      ads: {fb:false, ig:false, tiktok:false},
+      adsBudgets: {fb:'', ig:'', tiktok:''},
+    };
+  }
+  return c.execState[postId];
+}
+
+function renderExec(campId) {
+  if(!campId) return;
+  const c = getCampaign(campId);
+  document.getElementById('p3-title').textContent = c.config.name;
+
+  const wrap = document.getElementById('exec-posts-wrap');
+  wrap.innerHTML = '';
+
+  c.posts.forEach(p => {
+    const ph = PHASE_CFG.find(x=>x.key===p.phase);
+    const s = c.state[p.id];
+    const ex = getExecState(campId, p.id);
+    const postDone = s.status === 'done';
+    const phPosts = c.posts.filter(x=>x.phase===p.phase);
+    const localIdx = phPosts.indexOf(p)+1;
+
+    const card = document.createElement('div');
+    card.className = 'exec-card';
+    card.innerHTML = `
+      <div class="exec-hd" onclick="toggleExec('${campId}',${p.id})">
+        <span class="phase-dot dot-${p.phase}"></span>
+        <div style="min-width:0">
+          <div class="post-meta-lbl">${ph.name} · Bài ${localIdx} ${postDone?'<span style=\"font-size:10px;color:var(--green);font-weight:600\">✓ Đã đăng</span>':'<span style=\"font-size:10px;color:var(--text-tertiary)\">(chưa đăng)</span>'}</div>
+          <div class="post-hook-txt">${p.hook}</div>
+        </div>
+        <div id="ex-prog-${campId}-${p.id}" style="font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--surface-2);color:var(--text-secondary)">0/10</div>
+        <span class="chev" id="ex-chev-${campId}-${p.id}">▾</span>
+      </div>
+
+      <div class="exec-body" id="ex-body-${campId}-${p.id}">
+
+        <!-- REUP ĐA NỀN TẢNG -->
+        <div class="fgroup">
+          <div class="flbl2">1. Reup đa nền tảng <span class="ob ob-cvn">CVN</span></div>
+          <div class="platform-grid" id="plat-${campId}-${p.id}">
+            ${PLATFORMS.map(pl=>`
+            <div class="plat-item${ex.platforms[pl.key]?' done-plat':''}" id="plat-item-${campId}-${p.id}-${pl.key}" onclick="togglePlat('${campId}',${p.id},'${pl.key}')">
+              <span class="plat-icon">${pl.icon}</span>
+              <span class="plat-name">${pl.name}</span>
+              <span class="plat-check">✓</span>
+            </div>`).join('')}
+          </div>
+          <div class="fgroup" style="margin-top:8px">
+            <div class="flbl2">Link reup (paste sau khi đăng)</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+              ${PLATFORMS.map(pl=>`
+              <div class="link-item">
+                <div class="link-lbl">${pl.icon} ${pl.name}</div>
+                <input class="fi fi-link" placeholder="Link bài ${pl.name}..." value="${ex['link_'+pl.key]||''}" onchange="setExec('${campId}',${p.id},'link_${pl.key}',this.value)">
+              </div>`).join('')}
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- CHIA SẺ HỘI NHÓM -->
+        <div class="fgroup">
+          <div class="flbl2">2. Chia sẻ & Story <span class="ob ob-cvn">CVN</span></div>
+          <div style="background:var(--surface-2);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--sep)">
+            ${SHARE_GROUPS.map((g,i)=>`
+            <div style="display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 14px;${i>0?'border-top:1px solid var(--sep)':''}">
+              <div class="link-check${ex.shareGroups[g.key]?' checked':''}" onclick="toggleShare('${campId}',${p.id},'${g.key}')" id="sg-${campId}-${p.id}-${g.key}"></div>
+              <div>
+                <div style="font-size:13px;font-weight:500">${g.name}</div>
+                <div style="font-size:11px;color:var(--text-tertiary);margin-top:1px">Tick sau khi hoàn thành</div>
+              </div>
+              <span style="width:8px;height:8px;border-radius:50%;background:${g.color};display:inline-block;flex-shrink:0"></span>
+            </div>`).join('')}
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- CHẠY ADS -->
+        <div class="fgroup">
+          <div class="flbl2">3. Chạy Ads <span class="ob ob-ptp">PTP phê duyệt</span></div>
+          <div style="background:var(--surface-2);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--sep)">
+            ${[{k:'fb',label:'Facebook Ads',icon:'👥'},{k:'ig',label:'Instagram Ads',icon:'📸'},{k:'tiktok',label:'TikTok Ads',icon:'🎵'}].map((a,i)=>`
+            <div class="ads-row" style="${i>0?'border-top:1px solid var(--sep)':''}">
+              <div class="ads-toggle${ex.ads[a.k]?' on':''}" onclick="toggleAds('${campId}',${p.id},'${a.k}')" id="ads-${campId}-${p.id}-${a.k}"></div>
+              <div style="font-size:13px;font-weight:500">${a.icon} ${a.label}</div>
+              <div style="font-size:11px;color:var(--text-tertiary);flex-shrink:0">Ngân sách:</div>
+              <input class="fi fi-num" type="number" placeholder="0" value="${ex.adsBudgets[a.k]||''}" onchange="setExec('${campId}',${p.id},'adsBudget_${a.k}',this.value)" style="width:100px" ${ex.ads[a.k]?'':'disabled'}>
+              <div style="font-size:11px;color:var(--text-tertiary);flex-shrink:0">VND</div>
+            </div>`).join('')}
+          </div>
+        </div>
+
+      </div>
+    `;
+    wrap.appendChild(card);
+  });
+
+  updateExecProgress(campId);
+}
+
+function toggleExec(campId, postId) {
+  document.getElementById(`ex-body-${campId}-${postId}`).classList.toggle('open');
+  document.getElementById(`ex-chev-${campId}-${postId}`).classList.toggle('open');
+}
+
+function togglePlat(campId, postId, platKey) {
+  const ex = getExecState(campId, postId);
+  ex.platforms[platKey] = !ex.platforms[platKey];
+  document.getElementById(`plat-item-${campId}-${postId}-${platKey}`).classList.toggle('done-plat', ex.platforms[platKey]);
+  updateExecProgress(campId);
+}
+
+function toggleShare(campId, postId, groupKey) {
+  const ex = getExecState(campId, postId);
+  ex.shareGroups[groupKey] = !ex.shareGroups[groupKey];
+  document.getElementById(`sg-${campId}-${postId}-${groupKey}`).classList.toggle('checked', ex.shareGroups[groupKey]);
+  updateExecProgress(campId);
+}
+
+function toggleAds(campId, postId, platKey) {
+  const ex = getExecState(campId, postId);
+  ex.ads[platKey] = !ex.ads[platKey];
+  const tog = document.getElementById(`ads-${campId}-${postId}-${platKey}`);
+  tog.classList.toggle('on', ex.ads[platKey]);
+  // enable/disable budget input
+  const row = tog.closest('.ads-row');
+  const inp = row.querySelector('input.fi-num');
+  if(inp) inp.disabled = !ex.ads[platKey];
+  updateExecProgress(campId);
+}
+
+function setExec(campId, postId, key, val) {
+  const ex = getExecState(campId, postId);
+  ex[key] = val;
+}
+
+function updateExecProgress(campId) {
+  const c = getCampaign(campId);
+  let doneCount = 0, doingCount = 0, todoCount = 0;
+  let totalTasks = 0, completedTasks = 0;
+
+  c.posts.forEach(p => {
+    const ex = getExecState(campId, p.id);
+    const platDone = PLATFORMS.filter(pl => ex.platforms[pl.key]).length;
+    const shareDone = SHARE_GROUPS.filter(g => ex.shareGroups[g.key]).length;
+    const postTasks = PLATFORMS.length + SHARE_GROUPS.length; // 10 tasks per post
+    const postDone = platDone + shareDone;
+    totalTasks += postTasks;
+    completedTasks += postDone;
+
+    const progEl = document.getElementById(`ex-prog-${campId}-${p.id}`);
+    if(progEl) {
+      progEl.textContent = `${postDone}/${postTasks}`;
+      const pct = postDone/postTasks;
+      if(pct===1){progEl.style.background='var(--green-light)';progEl.style.color='#1a6b30'; doneCount++;}
+      else if(pct>0){progEl.style.background='var(--orange-light)';progEl.style.color='#bf5400'; doingCount++;}
+      else{progEl.style.background='var(--surface-2)';progEl.style.color='var(--text-secondary)'; todoCount++;}
+    }
+  });
+
+  document.getElementById('ex-done').textContent = doneCount;
+  document.getElementById('ex-doing').textContent = doingCount;
+  document.getElementById('ex-todo').textContent = todoCount;
+  const pct = totalTasks > 0 ? Math.round((completedTasks/totalTasks)*100) : 0;
+  document.getElementById('ex-pct').textContent = pct + '%';
+  document.getElementById('ex-prog-fill').style.width = pct + '%';
+}
+
+// ══════════════════════════════════
+// TRANG 4 — TỔNG KẾT
+// ══════════════════════════════════
+function sumTab(key, btn) {
+  ['kpi','rank','reward','eval'].forEach(k => {
+    const el = document.getElementById('sum-'+k);
+    if(el) el.style.display = k===key ? 'flex' : 'none';
+  });
+  btn.parentElement.querySelectorAll('.sum-tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function renderSummary(campId) {
+  if(!campId) return;
+  const c = getCampaign(campId);
+  document.getElementById('p4-title').textContent = c.config.name;
+
+  // KPI rows
+  const kpiWrap = document.getElementById('kpi-post-rows');
+  kpiWrap.innerHTML = '';
+  c.posts.forEach(p => {
+    const s = c.state[p.id];
+    const row = document.createElement('div');
+    row.className = 'post-result-row';
+    row.innerHTML = `
+      <span style="font-size:11px;font-weight:600;color:var(--text-tertiary)">${p.id}</span>
+      <span style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.hook}</span>
+      <input class="result-input" type="number" value="${s.reach||''}" placeholder="0" onchange="updateState('${campId}',${p.id},'reach',this.value)">
+      <input class="result-input" type="number" value="${s.interact||''}" placeholder="0" onchange="updateState('${campId}',${p.id},'interact',this.value)">
+      <input class="result-input" type="number" value="${s.cmt||''}" placeholder="0" onchange="updateState('${campId}',${p.id},'cmt',this.value);calcKpi()">
+      <span class="result-input" style="background:transparent;border:none;pointer-events:none;color:var(--green);font-weight:600" id="eng-${campId}-${p.id}">${s.reach?((s.interact/s.reach)*100).toFixed(1)+'%':'—'}</span>
+    `;
+    kpiWrap.appendChild(row);
+  });
+
+  // Rank cards
+  const members = [
+    {name: c.config.to || 'C02-MKT-PTP', role:'Phó Phòng MKT', key:'ptp'},
+    {name: 'C02-MKT-CVN', role:'Chuyên viên MKT', key:'cvn'},
+  ];
+  if(!c.rankScores) c.rankScores = {};
+  members.forEach(m => { if(!c.rankScores[m.key]) c.rankScores[m.key] = {ontime:0,quality:0,insight:0}; });
+
+  // Member score rows
+  const scoreWrap = document.getElementById('member-score-rows');
+  scoreWrap.innerHTML = '';
+  members.forEach(m => {
+    const rs = c.rankScores[m.key];
+    const scoreDiv = document.createElement('div');
+    scoreDiv.style.cssText = 'padding:14px 0;border-bottom:1px solid var(--sep)';
+    scoreDiv.innerHTML = `
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px">${m.name} <span style="font-size:11px;color:var(--text-tertiary);font-weight:400">${m.role}</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div>
+          <div class="flbl2" style="margin-bottom:4px">Đúng hạn (40pts)</div>
+          <input class="fi fi-num" type="number" min="0" max="40" value="${rs.ontime}" placeholder="0–40" oninput="setRankScore('${campId}','${m.key}','ontime',this.value);updateRankDisplay('${campId}')">
+        </div>
+        <div>
+          <div class="flbl2" style="margin-bottom:4px">Chất lượng (30pts)</div>
+          <input class="fi fi-num" type="number" min="0" max="30" value="${rs.quality}" placeholder="0–30" oninput="setRankScore('${campId}','${m.key}','quality',this.value);updateRankDisplay('${campId}')">
+        </div>
+        <div>
+          <div class="flbl2" style="margin-bottom:4px">Insight (30pts)</div>
+          <input class="fi fi-num" type="number" min="0" max="30" value="${rs.insight}" placeholder="0–30" oninput="setRankScore('${campId}','${m.key}','insight',this.value);updateRankDisplay('${campId}')">
+        </div>
+      </div>
+    `;
+    scoreWrap.appendChild(scoreDiv);
+  });
+
+  updateRankDisplay(campId);
+
+  // Reward decisions
+  const rewardWrap = document.getElementById('reward-decision-wrap');
+  rewardWrap.innerHTML = '';
+  if(!c.rewardDecisions) c.rewardDecisions = {};
+  members.forEach(m => {
+    const score = calcMemberScore(campId, m.key);
+    const tier = score>=90?'S':score>=75?'A':score>=60?'B':'C';
+    const tierClass = {'S':'tier-s','A':'tier-a','B':'tier-b','C':'tier-c'}[tier];
+    const amounts = {'S':'500,000','A':'300,000','B':'150,000','C':'Không thưởng'};
+    const row = document.createElement('div');
+    row.style.cssText = 'padding:14px 0;border-bottom:1px solid var(--sep);display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px';
+    row.innerHTML = `
+      <div>
+        <div style="font-size:13px;font-weight:500">${m.name}</div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-top:2px">${score} điểm · Hạng <span class="reward-tier ${tierClass}">${tier}</span></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:15px;font-weight:600">${amounts[tier]} VND</div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-top:1px">Đề xuất thưởng</div>
+      </div>
+    `;
+    rewardWrap.appendChild(row);
+  });
+
+  // Eval stars
+  const evalWrap = document.getElementById('eval-stars-wrap');
+  evalWrap.innerHTML = '';
+  if(!c.evalStars) c.evalStars = {};
+  const criteria = [
+    'Hoàn thành đúng deadline', 'Chất lượng nội dung bài viết',
+    'Tốc độ phản hồi và xử lý', 'Tinh thần chủ động sáng kiến',
+    'Phối hợp nhóm và báo cáo', 'Kết quả KPI thực tế',
+  ];
+  criteria.forEach((cr, i) => {
+    if(!c.evalStars[i]) c.evalStars[i] = 0;
+    const row = document.createElement('div');
+    row.className = 'star-row';
+    row.innerHTML = `
+      <span class="star-label">${cr}</span>
+      <div class="stars" id="stars-${campId}-${i}">
+        ${[1,2,3,4,5].map(n=>`<span class="star${c.evalStars[i]>=n?' lit':''}" onclick="setStar('${campId}',${i},${n})">★</span>`).join('')}
+      </div>
+    `;
+    evalWrap.appendChild(row);
+  });
+}
+
+function calcMemberScore(campId, memberKey) {
+  const c = getCampaign(campId);
+  if(!c.rankScores || !c.rankScores[memberKey]) return 0;
+  const rs = c.rankScores[memberKey];
+  return (rs.ontime||0) + (rs.quality||0) + (rs.insight||0);
+}
+
+function setRankScore(campId, memberKey, field, val) {
+  const c = getCampaign(campId);
+  if(!c.rankScores) c.rankScores = {};
+  if(!c.rankScores[memberKey]) c.rankScores[memberKey] = {ontime:0,quality:0,insight:0};
+  c.rankScores[memberKey][field] = parseInt(val)||0;
+}
+
+function updateRankDisplay(campId) {
+  const c = getCampaign(campId);
+  const members = [
+    {name: c.config.to || 'C02-MKT-PTP', role:'Phó Phòng MKT', key:'ptp'},
+    {name: 'C02-MKT-CVN', role:'Chuyên viên MKT', key:'cvn'},
+  ];
+  const sorted = members.map(m => ({...m, score: calcMemberScore(campId, m.key)}))
+    .sort((a,b) => b.score - a.score);
+
+  const wrap = document.getElementById('rank-cards-wrap');
+  wrap.innerHTML = '';
+  sorted.forEach((m, idx) => {
+    const rank = idx+1;
+    const rankClass = ['rank-1','rank-2','rank-3','rank-n'][Math.min(rank-1,3)];
+    const tier = m.score>=90?'S':m.score>=75?'A':m.score>=60?'B':'C';
+    const tierClass = {'S':'tier-s','A':'tier-a','B':'tier-b','C':'tier-c'}[tier];
+    const medals = ['🥇','🥈','🥉',''];
+    const card = document.createElement('div');
+    card.className = 'rank-card';
+    card.innerHTML = `
+      <div class="rank-hd">
+        <div class="rank-num ${rankClass}">${medals[Math.min(rank-1,3)]||rank}</div>
+        <div>
+          <div class="rank-name">${m.name}</div>
+          <div class="rank-role">${m.role}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="rank-score">${m.score}<span style="font-size:13px;font-weight:400;color:var(--text-tertiary)">/100</span></div>
+          <span class="reward-tier ${tierClass} rank-badge">Hạng ${tier}</span>
+        </div>
+      </div>
+    `;
+    wrap.appendChild(card);
+  });
+}
+
+function setStar(campId, idx, val) {
+  const c = getCampaign(campId);
+  if(!c.evalStars) c.evalStars = {};
+  c.evalStars[idx] = val;
+  const starsEl = document.getElementById(`stars-${campId}-${idx}`);
+  starsEl.querySelectorAll('.star').forEach((s,i) => s.classList.toggle('lit', i<val));
+}
+
+function calcKpi() {
+  const reach = parseFloat(document.getElementById('kpi-reach').value)||0;
+  const engage = parseFloat(document.getElementById('kpi-engage').value)||0;
+  const adspend = parseFloat(document.getElementById('kpi-adspend').value)||0;
+  const leads = parseFloat(document.getElementById('kpi-leads').value)||0;
+
+  const er = reach>0 ? ((engage/reach)*100).toFixed(2)+'%' : '—';
+  const cpl = leads>0 ? Math.round(adspend/leads).toLocaleString('vi-VN')+' VND' : '—';
+  document.getElementById('kpi-engrate').textContent = er;
+  document.getElementById('kpi-cpl').textContent = cpl;
 }
 
 // ── INIT ──
