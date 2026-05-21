@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KIYOSHI — Content Calendar</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f2f2f7;--surface:#fff;--surface-2:#f2f2f7;--surface-3:#e5e5ea;
+  --text-primary:#1c1c1e;--text-secondary:#636366;--text-tertiary:#aeaeb2;
+  --accent:#007aff;--accent-light:#e8f1ff;
+  --green:#34c759;--green-light:#e8f9ed;
+  --orange:#ff9500;--orange-light:#fff3e0;
+  --red:#ff3b30;--red-light:#fff0ef;
+  --purple:#af52de;--purple-light:#f5eaff;
+  --sep:rgba(60,60,67,.12);
+  --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:20px;
+  --sh-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --sh-md:0 4px 16px rgba(0,0,0,.08);
+  --font:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* ════════ HOME SCREEN ════════ */
+#home-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+.home-logo{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:10px;text-align:center}
+.home-title{font-size:28px;font-weight:600;letter-spacing:-.4px;text-align:center;margin-bottom:6px}
+.home-sub{font-size:13px;color:var(--text-secondary);text-align:center;margin-bottom:36px;line-height:1.6;max-width:420px}
+
+.campaigns-wrap{width:100%;max-width:600px}
+.campaigns-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.campaign-item{background:var(--surface);border-radius:var(--r-lg);padding:14px 18px;box-shadow:var(--sh-sm);display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s;border:1.5px solid transparent}
+.campaign-item:hover{border-color:var(--accent);box-shadow:var(--sh-md)}
+.campaign-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.campaign-info{flex:1;min-width:0}
+.campaign-name{font-size:13px;font-weight:500;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.campaign-meta{font-size:11px;color:var(--text-tertiary);margin-top:2px}
+.campaign-badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;flex-shrink:0}
+.campaign-actions{display:flex;gap:6px;flex-shrink:0}
+.icon-btn{width:28px;height:28px;border-radius:50%;border:none;background:var(--surface-2);color:var(--text-secondary);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.icon-btn:hover{background:var(--surface-3)}
+.icon-btn.del:hover{background:var(--red-light);color:var(--red)}
+
+.btn-new{width:100%;max-width:600px;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--r-md);font-size:14px;font-weight:500;font-family:var(--font);cursor:pointer;transition:opacity .15s;letter-spacing:-.1px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-new:hover{opacity:.88}
+.home-hint{font-size:11px;color:var(--text-tertiary);text-align:center;margin-top:14px}
+
+/* ════════ SETUP MODAL ════════ */
+#setup-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:100;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+#setup-overlay.show{display:flex}
+.setup-modal{background:var(--surface);border-radius:var(--r-xl);padding:32px 28px;max-width:620px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.18)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.modal-title{font-size:18px;font-weight:600;letter-spacing:-.2px}
+.btn-close{width:30px;height:30px;border-radius:50%;border:none;background:var(--surface-2);color:var(--text-secondary);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.modal-sub{font-size:13px;color:var(--text-secondary);margin-bottom:24px;line-height:1.5}
+.setup-section{margin-bottom:20px}
+.setup-sec-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-tertiary);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--sep)}
+.field-grid{display:flex;flex-direction:column;gap:10px}
+.field-row{display:grid;gap:10px}
+.field{display:flex;flex-direction:column;gap:5px}
+.flbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-tertiary)}
+.finput{width:100%;padding:9px 12px;border:1px solid var(--sep);border-radius:var(--r-sm);font-size:13px;font-family:var(--font);color:var(--text-primary);background:var(--surface-2);outline:none;transition:border-color .15s}
+.finput:focus{border-color:var(--accent);background:var(--surface)}
+.finput::placeholder{color:var(--text-tertiary)}
+select.finput{cursor:pointer}
+.post-setup-row{display:grid;grid-template-columns:24px 1fr 118px 90px;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--sep)}
+.post-setup-row:last-child{border-bottom:none}
+.post-num{font-size:11px;font-weight:600;text-align:center}
+.post-hook-inp{width:100%;padding:7px 10px;border:1px solid var(--sep);border-radius:var(--r-sm);font-size:13px;font-family:var(--font);color:var(--text-primary);background:var(--surface-2);outline:none}
+.post-hook-inp:focus{border-color:var(--accent);background:var(--surface)}
+.post-hook-inp::placeholder{color:var(--text-tertiary)}
+.err-msg{font-size:12px;color:var(--red);margin-top:6px;display:none}
+.btn-create{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:var(--r-md);font-size:14px;font-weight:500;font-family:var(--font);cursor:pointer;margin-top:20px;transition:opacity .15s}
+.btn-create:hover{opacity:.88}
+
+/* ════════ CALENDAR SCREEN ════════ */
+#cal-screen{display:none;padding:24px 20px 60px;max-width:960px;margin:0 auto}
+.cal-topbar{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.btn-back{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:500;color:var(--accent);background:none;border:none;cursor:pointer;font-family:var(--font);padding:6px 12px;border-radius:var(--r-sm);transition:background .12s}
+.btn-back:hover{background:var(--accent-light)}
+.cal-topbar-title{font-size:13px;font-weight:500;color:var(--text-secondary)}
+
+.doc-header{background:var(--surface);border-radius:var(--r-xl);padding:26px 28px;margin-bottom:16px;box-shadow:var(--sh-sm)}
+.doc-tag{display:inline-flex;align-items:center;font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);padding:4px 10px;border-radius:20px;margin-bottom:10px}
+.doc-title{font-size:22px;font-weight:600;letter-spacing:-.3px;margin-bottom:4px}
+.doc-sub{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.doc-meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--sep)}
+.meta-item{display:flex;flex-direction:column;gap:2px}
+.meta-lbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--text-tertiary)}
+.meta-val{font-size:13px;font-weight:500}
+
+.warn-box{background:#fff9f0;border:1px solid #ffe0b2;border-radius:var(--r-lg);padding:12px 16px;margin-bottom:14px;display:flex;gap:10px;font-size:13px;color:#7d4300;line-height:1.6}
+
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.stat{background:var(--surface);border-radius:var(--r-lg);padding:13px 15px;box-shadow:var(--sh-sm)}
+.stat-lbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--text-tertiary);margin-bottom:3px}
+.stat-val{font-size:24px;font-weight:600;letter-spacing:-.5px;line-height:1}
+.stat-sub{font-size:11px;color:var(--text-secondary);margin-top:2px}
+
+.prog-card{background:var(--surface);border-radius:var(--r-lg);padding:15px 20px;margin-bottom:14px;box-shadow:var(--sh-sm)}
+.prog-bg{background:var(--surface-3);border-radius:20px;height:6px;overflow:hidden;margin:8px 0}
+.prog-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--accent),#34aadc);transition:width .5s;width:0%}
+.pills{display:flex;gap:4px;margin-bottom:6px}
+.pill{flex:1;height:4px;border-radius:20px;opacity:.3;transition:all .3s}
+.pill.done{opacity:1;background:var(--green)!important}
+
+.dl-strip{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.dl-badge{font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px}
+.dl-ok{background:var(--green-light);color:#1a6b30}
+.dl-warn{background:var(--orange-light);color:#7d4300}
+.dl-late{background:var(--red-light);color:#8b1a1a}
+
+.sec-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-tertiary);margin:22px 0 9px 2px}
+
+/* ── POST CARD ── */
+.post-card{background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh-sm);margin-bottom:9px;overflow:hidden}
+.post-hd{display:grid;grid-template-columns:10px 1fr auto auto;gap:10px;align-items:center;padding:13px 18px;cursor:pointer;user-select:none;transition:background .12s}
+.post-hd:hover{background:var(--surface-2)}
+.phase-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-t{background:var(--purple)}.dot-l{background:var(--accent)}.dot-f{background:var(--red)}
+.post-meta-lbl{font-size:11px;color:var(--text-tertiary);margin-bottom:1px}
+.post-hook-txt{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status-sel{font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;border:none;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;font-family:var(--font)}
+.s-todo{background:var(--surface-2);color:var(--text-secondary)}
+.s-doing{background:var(--orange-light);color:#bf5400}
+.s-done{background:var(--green-light);color:#1a6b30}
+.chev{font-size:13px;color:var(--text-tertiary);transition:transform .2s;margin-left:2px;flex-shrink:0}
+.chev.open{transform:rotate(180deg)}
+
+.post-body{display:none;padding:16px 20px 20px;border-top:1px solid var(--sep);flex-direction:column;gap:15px}
+.post-body.open{display:flex}
+
+.fgroup{display:flex;flex-direction:column;gap:6px}
+.fgrid{display:grid;gap:9px}
+.flbl2{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-tertiary)}
+.fi{width:100%;padding:8px 11px;border:1px solid var(--sep);border-radius:var(--r-sm);font-size:13px;font-family:var(--font);color:var(--text-primary);background:var(--surface-2);outline:none;transition:border-color .15s}
+.fi:focus{border-color:var(--accent);background:var(--surface)}
+.fi::placeholder{color:var(--text-tertiary)}
+.fi-link{color:var(--accent)}
+.fi-num{text-align:right;font-weight:500}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+/* content block */
+.cb{background:var(--surface-2);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--sep)}
+.cb-head{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border-bottom:1px solid var(--sep);background:var(--surface)}
+.cb-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary)}
+.btn-copy{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;border:none;cursor:pointer;font-family:var(--font);background:var(--accent-light);color:var(--accent);transition:all .15s}
+.btn-copy:hover{background:var(--accent);color:#fff}
+.btn-copy.copied{background:var(--green-light);color:#1a6b30}
+.cb-ta{width:100%;padding:11px 13px;border:none;font-size:13px;font-family:var(--font);color:var(--text-primary);background:transparent;outline:none;resize:vertical;line-height:1.6;min-height:72px}
+.cb-ta::placeholder{color:var(--text-tertiary)}
+
+/* expand tabs */
+.xtabs{display:flex;border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--sep);margin-bottom:10px}
+.xtab{flex:1;padding:7px 4px;text-align:center;font-size:11px;font-weight:500;cursor:pointer;background:var(--surface-2);color:var(--text-secondary);border:none;font-family:var(--font);transition:all .15s;border-right:1px solid var(--sep)}
+.xtab:last-child{border-right:none}
+.xtab.on{background:var(--surface);color:var(--text-primary);font-weight:600}
+.xpanel{display:none;flex-direction:column;gap:9px}
+.xpanel.on{display:flex}
+
+/* cmt items */
+.cmt-item{background:var(--surface);border-radius:var(--r-sm);border:1px solid var(--sep);overflow:hidden;margin-bottom:7px}
+.cmt-item:last-child{margin-bottom:0}
+.cmt-head{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;border-bottom:1px solid var(--sep);background:var(--surface-2)}
+.cmt-lbl{font-size:11px;font-weight:600;color:var(--text-tertiary)}
+.cmt-ta{width:100%;padding:9px 12px;border:none;font-size:13px;font-family:var(--font);color:var(--text-primary);background:transparent;outline:none;resize:vertical;line-height:1.6;min-height:48px}
+.cmt-ta::placeholder{color:var(--text-tertiary)}
+
+/* reply */
+.reply-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 0;border-bottom:1px solid var(--sep)}
+.reply-row:last-child{border-bottom:none;padding-bottom:0}
+.reply-trigger{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#bf5400;background:var(--orange-light);padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:4px}
+
+/* hashtag */
+.ht-tags{display:flex;flex-wrap:wrap;gap:5px;padding:9px 12px;border-bottom:1px solid var(--sep);background:var(--surface);border-radius:var(--r-sm) var(--r-sm) 0 0;border:1px solid var(--sep)}
+.ht-tag{font-size:12px;color:var(--accent);background:var(--accent-light);padding:3px 9px;border-radius:20px;cursor:pointer;user-select:none;transition:all .15s;border:none;font-family:var(--font)}
+.ht-tag:hover{background:var(--accent);color:#fff}
+.ht-wrap{border:1px solid var(--sep);border-radius:var(--r-sm);overflow:hidden}
+.ht-footer{display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:var(--surface);border-top:1px solid var(--sep)}
+
+/* checklist */
+.cl-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-tertiary);margin-bottom:8px}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--sep)}
+.cl-item:last-child{border-bottom:none;padding-bottom:0}
+.chkbox{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--surface-3);background:var(--surface);flex-shrink:0;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.chkbox.checked{background:var(--green);border-color:var(--green)}
+.chkbox.checked::after{content:'';width:5px;height:8px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px);display:block}
+.cl-name{font-size:13px;font-weight:500;line-height:1.4}
+.cl-desc{font-size:11px;color:var(--text-tertiary);margin-top:2px;line-height:1.5}
+.ob{font-size:11px;font-weight:500;padding:2px 7px;border-radius:20px;margin-left:5px}
+.ob-ptp{background:var(--accent-light);color:#0055d4}
+.ob-cvn{background:var(--purple-light);color:#7b3fa3}
+.divider{height:1px;background:var(--sep);margin:2px 0}
+
+/* footer */
+.footer-card{margin-top:26px;padding:17px 20px;background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--sh-sm)}
+.footer-copy{text-align:center;margin-top:14px;font-size:11px;color:var(--text-tertiary)}
+.btn-sm{font-size:12px;color:var(--text-tertiary);background:none;border:1px solid var(--sep);border-radius:var(--r-sm);padding:5px 13px;cursor:pointer;font-family:var(--font);transition:all .15s;margin-top:10px;margin-right:8px}
+.btn-sm:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm.danger:hover{border-color:var(--red);color:var(--red)}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ HOME SCREEN ════════════════════ -->
+<div id="home-screen">
+  <div class="home-logo">KIYOSHI Group · Phòng Marketing C02-PMKT</div>
+  <div class="home-title">Content Calendar</div>
+  <div class="home-sub">Hệ thống theo dõi và triển khai tuyến nội dung chuẩn hoá cho tất cả Brand thuộc Tập Đoàn KIYOSHI.</div>
+
+  <div class="campaigns-wrap">
+    <div class="campaigns-list" id="campaigns-list">
+      <!-- render by JS -->
+    </div>
+    <button class="btn-new" onclick="openSetup(null)">
+      <span style="font-size:18px;line-height:1">+</span> Tạo chiến dịch mới
+    </button>
+    <div class="home-hint">Tất cả chiến dịch lưu trong file này · Mở file = đủ hết</div>
+  </div>
+</div>
+
+<!-- ════════════════════ SETUP MODAL ════════════════════ -->
+<div id="setup-overlay">
+  <div class="setup-modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Tạo chiến dịch mới</div>
+      <button class="btn-close" onclick="closeSetup()">✕</button>
+    </div>
+    <div class="modal-sub">Điền thông tin bên dưới. File sẽ tự tạo bảng theo dõi hoàn chỉnh để bàn giao cho Phó Phòng triển khai.</div>
+
+    <div class="setup-section">
+      <div class="setup-sec-lbl">Thông tin chiến dịch</div>
+      <div class="field-grid">
+        <div class="field-row" style="grid-template-columns:1fr 1fr">
+          <div class="field"><span class="flbl">Tên chiến dịch</span><input class="finput" id="cfg-name" placeholder="VD: Kamiya K4 — Tuyển sinh 2025" maxlength="80"></div>
+          <div class="field"><span class="flbl">Brand</span>
+            <select class="finput" id="cfg-brand">
+              <option value="">— Chọn brand —</option>
+              <option>Kamiya</option><option>Hoshi Omakase</option><option>Hoshi Store</option>
+              <option>Kani Food</option><option>Sushi Miyagi</option><option>Miziki</option><option>Khác</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="field"><span class="flbl">Người bàn giao</span><input class="finput" id="cfg-from" value="C02-MKT-TRP"></div>
+          <div class="field"><span class="flbl">Người nhận</span><input class="finput" id="cfg-to" value="C02-MKT-PTP"></div>
+          <div class="field"><span class="flbl">Mã tài liệu</span><input class="finput" id="cfg-code" placeholder="MK03"></div>
+        </div>
+        <div class="field-row" style="grid-template-columns:1fr 1fr">
+          <div class="field"><span class="flbl">Mốc kết thúc / đóng cổng</span><input class="finput" type="date" id="cfg-deadline"></div>
+          <div class="field"><span class="flbl">Kênh mặc định</span>
+            <select class="finput" id="cfg-channel">
+              <option>Facebook Page</option><option>TikTok</option><option>Zalo OA</option>
+              <option>Instagram</option><option>Facebook + TikTok</option>
+            </select>
+          </div>
+        </div>
+        <div class="field"><span class="flbl">Ghi chú / Quy định đặc biệt</span><input class="finput" id="cfg-note" placeholder="VD: Cần xác nhận PTGĐ và C03-QL.ĐH trước Bài 1"></div>
+      </div>
+    </div>
+
+    <div class="setup-section">
+      <div class="setup-sec-lbl">Số bài viết</div>
+      <div class="field-row" style="grid-template-columns:130px 1fr">
+        <div class="field"><span class="flbl">Tổng số bài</span>
+          <select class="finput" id="cfg-count" onchange="buildPostRows()">
+            <option value="3">3 bài</option><option value="6">6 bài</option>
+            <option value="9" selected>9 bài</option><option value="12">12 bài</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:flex-end;padding-bottom:2px">
+          <span style="font-size:12px;color:var(--text-tertiary);line-height:1.5">Cấu trúc 3 giai đoạn đều nhau:<br><strong style="color:var(--purple)">Teasing</strong> → <strong style="color:var(--accent)">Launching</strong> → <strong style="color:var(--red)">Firing</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-section">
+      <div class="setup-sec-lbl">Hook & lịch từng bài <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-tertiary)">(có thể chỉnh lại sau)</span></div>
+      <div id="post-setup-rows"></div>
+    </div>
+
+    <div class="err-msg" id="err-msg">⚠ Điền đủ: tên chiến dịch, brand, mốc kết thúc và hook tất cả các bài.</div>
+    <button class="btn-create" onclick="createCampaign()">Tạo Content Calendar →</button>
+  </div>
+</div>
+
+<!-- ════════════════════ CALENDAR SCREEN ════════════════════ -->
+<div id="cal-screen">
+  <div class="cal-topbar">
+    <button class="btn-back" onclick="goHome()">← Tất cả chiến dịch</button>
+    <span class="cal-topbar-title" id="cal-topbar-title"></span>
+  </div>
+
+  <div class="doc-header">
+    <div class="doc-tag" id="cal-tag"></div>
+    <div class="doc-title" id="cal-title"></div>
+    <div class="doc-sub" id="cal-sub"></div>
+    <div class="doc-meta">
+      <div class="meta-item"><span class="meta-lbl">Người bàn giao</span><span class="meta-val" id="cal-from"></span></div>
+      <div class="meta-item"><span class="meta-lbl">Người nhận</span><span class="meta-val" id="cal-to"></span></div>
+      <div class="meta-item"><span class="meta-lbl">Ngày tạo</span><span class="meta-val" id="cal-created"></span></div>
+      <div class="meta-item"><span class="meta-lbl">Tổng bài</span><span class="meta-val" id="cal-total"></span></div>
+      <div class="meta-item"><span class="meta-lbl">Kênh mặc định</span><span class="meta-val" id="cal-channel"></span></div>
+    </div>
+  </div>
+
+  <div class="warn-box" id="cal-warn" style="display:none">⚠️ <div id="cal-warn-txt"></div></div>
+
+  <div class="stats-grid">
+    <div class="stat"><div class="stat-lbl">Tổng bài</div><div class="stat-val" id="s-total">—</div><div class="stat-sub" id="s-phases">—</div></div>
+    <div class="stat"><div class="stat-lbl">Đã đăng</div><div class="stat-val" id="s-done" style="color:var(--green)">0</div><div class="stat-sub">hoàn thành</div></div>
+    <div class="stat"><div class="stat-lbl">Đang làm</div><div class="stat-val" id="s-doing" style="color:var(--orange)">0</div><div class="stat-sub">in progress</div></div>
+    <div class="stat"><div class="stat-lbl">Còn lại</div><div class="stat-val" id="s-todo" style="color:var(--text-secondary)">—</div><div class="stat-sub">chưa bắt đầu</div></div>
+  </div>
+
+  <div class="prog-card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:13px;font-weight:500">Tiến độ tổng chiến dịch</span>
+      <span style="font-size:13px;font-weight:600;color:var(--accent)" id="pct-txt">0%</span>
+    </div>
+    <div class="prog-bg"><div class="prog-fill" id="prog-fill"></div></div>
+    <div class="pills" id="pills-wrap"></div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap" id="phase-legend"></div>
+  </div>
+
+  <div class="dl-strip" id="dl-strip"></div>
+  <div id="posts-wrap"></div>
+
+  <div class="footer-card">
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary);margin-bottom:8px">Quy định bàn giao</div>
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.8">
+      📌 <strong>PTP</strong> chịu trách nhiệm toàn bộ tiến độ — báo cáo TRP trước mỗi ngày đăng trước 08:00.<br>
+      📌 <strong>CVN</strong> hoàn thành 3 việc sau đăng đúng khung giờ — tick xác nhận ngay khi hoàn thành.<br>
+      📌 Phát sinh sự cố — báo PTP ngay, không tự xử lý vượt thẩm quyền.<br>
+      📌 File nội bộ — không chia sẻ ra ngoài hệ thống KIYOSHI (MK10 · Nguyên tắc Đỏ).
+    </div>
+    <div style="margin-top:12px">
+      <button class="btn-sm" onclick="goHome()">← Về trang chủ</button>
+      <button class="btn-sm danger" onclick="deleteCurrent()">Xoá chiến dịch này</button>
+    </div>
+  </div>
+  <div class="footer-copy" id="cal-footer"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// DATA STORE (in-memory, tất cả campaigns)
+// ══════════════════════════════════════════
+const PHASE_CFG = [
+  {key:'t',name:'Teasing', color:'#af52de',light:'#f5eaff',dark:'#7b3fa3',icon:'🎯'},
+  {key:'l',name:'Launching',color:'#007aff',light:'#e8f1ff',dark:'#0055d4',icon:'🚀'},
+  {key:'f',name:'Firing',  color:'#ff3b30',light:'#fff0ef',dark:'#8b1a1a',icon:'🔥'},
+];
+const CHANNELS = ['Facebook Page','TikTok','Zalo OA','Instagram','Facebook + TikTok'];
+const BRAND_COLORS = {
+  'Kamiya':'#af52de','Hoshi Omakase':'#ff9500','Hoshi Store':'#34c759',
+  'Kani Food':'#ff3b30','Sushi Miyagi':'#007aff','Miziki':'#5ac8fa','Khác':'#636366'
+};
+
+let campaigns = []; // [{id, config, posts, state}]
+let activeCampaignId = null;
+let editingCampaignId = null; // null = new
+
+// ── Seed Kamiya K4 ──
+campaigns.push({
+  id: 'kamiya-k4',
+  config: {
+    name:'Kamiya K4 — Tuyển sinh 2025', brand:'Kamiya',
+    from:'C02-MKT-TRP', to:'C02-MKT-PTP', code:'MK03',
+    deadline:'2025-07-28', channel:'Facebook Page',
+    note:'Bắt buộc xác nhận PTGĐ và C03-QL.ĐH Kamiya trước Bài 1.',
+    created: new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'})
+  },
+  posts:[
+    {id:1,phase:'t',hook:'Tại sao A.MA làm bếp đã 3 năm nhưng vẫn thua người học bếp 3 tháng?',scheduledDate:'2025-07-09',scheduledTime:'08:00'},
+    {id:2,phase:'t',hook:'Tiêu chuẩn "Nghệ nhân" bắt đầu từ một lưỡi dao mài đúng góc.',scheduledDate:'2025-07-11',scheduledTime:'08:00'},
+    {id:3,phase:'t',hook:'Nghề bếp là lao động chân tay? "Bạn đã nhầm".',scheduledDate:'2025-07-14',scheduledTime:'08:00'},
+    {id:4,phase:'l',hook:'Cái giá của 3 năm mò mẫm và lòng vòng đắt hơn bạn nghĩ.',scheduledDate:'2025-07-16',scheduledTime:'08:00'},
+    {id:5,phase:'l',hook:'Tấm vé gia nhập đội ngũ kế cận của thầy Hoshi Phan.',scheduledDate:'2025-07-18',scheduledTime:'08:00'},
+    {id:6,phase:'l',hook:'Sự thật đằng sau lò luyện Chef offline đẳng cấp quốc tế.',scheduledDate:'2025-07-21',scheduledTime:'08:00'},
+    {id:7,phase:'f',hook:'Thông báo chính thức — hồ sơ đổ về từ khắp tỉnh thành.',scheduledDate:'2025-07-23',scheduledTime:'08:00'},
+    {id:8,phase:'f',hook:'Quy tắc thép của căn bếp 12 người chuẩn bị kích hoạt.',scheduledDate:'2025-07-25',scheduledTime:'08:00'},
+    {id:9,phase:'f',hook:'Đóng cổng tuyển sinh — Omotenashi Closure.',scheduledDate:'2025-07-28',scheduledTime:'08:00'},
+  ],
+  state: {}
+});
+// init state for K4
+initCampaignState('kamiya-k4');
+
+function initCampaignState(id) {
+  const c = getCampaign(id);
+  c.posts.forEach(p => {
+    if(!c.state[p.id]) c.state[p.id] = {
+      status:'todo', channel: c.config.channel, assignee:'',
+      postedTime:'', link:'', reach:'', interact:'', cmt:'',
+      chk1:false, chk2:false, chk3:false,
+      caption:'', cmt1:'', cmt2:'', cmt3:'',
+      story:'', reels:'', music:'', hashtag:'',
+      noteChk1:'', noteChk2:'', noteChk3:''
+    };
+  });
+}
+
+function getCampaign(id){ return campaigns.find(c=>c.id===id); }
+
+// ══════════════════════════════════
+// HOME SCREEN
+// ══════════════════════════════════
+function renderHome() {
+  document.getElementById('home-screen').style.display='flex';
+  document.getElementById('cal-screen').style.display='none';
+
+  const list = document.getElementById('campaigns-list');
+  list.innerHTML = '';
+  if(campaigns.length === 0){
+    list.innerHTML = `<div style="text-align:center;font-size:13px;color:var(--text-tertiary);padding:24px 0">Chưa có chiến dịch nào. Bấm "+ Tạo chiến dịch mới" để bắt đầu.</div>`;
+    return;
+  }
+  campaigns.forEach(c => {
+    const done = c.posts.filter(p=>c.state[p.id]?.status==='done').length;
+    const pct = Math.round((done/c.posts.length)*100);
+    const color = BRAND_COLORS[c.config.brand]||'#636366';
+    const item = document.createElement('div');
+    item.className = 'campaign-item';
+    item.innerHTML = `
+      <span class="campaign-dot" style="background:${color}"></span>
+      <div class="campaign-info" onclick="openCampaign('${c.id}')">
+        <div class="campaign-name">${c.config.name}</div>
+        <div class="campaign-meta">${c.config.brand} · ${c.posts.length} bài · ${c.config.channel}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+        <span class="campaign-badge" style="background:${pct===100?'var(--green-light)':'var(--surface-2)'};color:${pct===100?'#1a6b30':'var(--text-secondary)'}">${pct}% xong</span>
+        <div style="display:flex;gap:5px">
+          <button class="icon-btn" title="Nhân bản" onclick="event.stopPropagation();duplicateCampaign('${c.id}')">⧉</button>
+          <button class="icon-btn del" title="Xoá" onclick="event.stopPropagation();deleteCampaign('${c.id}')">✕</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+function openCampaign(id) {
+  activeCampaignId = id;
+  renderCalendar(id);
+  document.getElementById('home-screen').style.display='none';
+  document.getElementById('cal-screen').style.display='block';
+  window.scrollTo(0,0);
+}
+
+function goHome() {
+  activeCampaignId = null;
+  renderHome();
+  window.scrollTo(0,0);
+}
+
+function deleteCampaign(id) {
+  if(!confirm('Xoá chiến dịch này? Không thể khôi phục.')) return;
+  campaigns = campaigns.filter(c=>c.id!==id);
+  renderHome();
+}
+
+function deleteCurrent() {
+  if(!activeCampaignId) return;
+  if(!confirm('Xoá chiến dịch này? Không thể khôi phục.')) return;
+  campaigns = campaigns.filter(c=>c.id!==activeCampaignId);
+  goHome();
+}
+
+function duplicateCampaign(id) {
+  const src = getCampaign(id);
+  const newId = 'camp-' + Date.now();
+  const copy = JSON.parse(JSON.stringify(src));
+  copy.id = newId;
+  copy.config.name = src.config.name + ' (bản sao)';
+  copy.config.created = new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
+  copy.state = {};
+  campaigns.push(copy);
+  initCampaignState(newId);
+  renderHome();
+}
+
+// ══════════════════════════════════
+// SETUP MODAL
+// ══════════════════════════════════
+function openSetup(id) {
+  editingCampaignId = id;
+  document.getElementById('modal-title').textContent = id ? 'Chỉnh sửa chiến dịch' : 'Tạo chiến dịch mới';
+  if(id) {
+    const c = getCampaign(id);
+    document.getElementById('cfg-name').value = c.config.name;
+    document.getElementById('cfg-brand').value = c.config.brand;
+    document.getElementById('cfg-from').value = c.config.from;
+    document.getElementById('cfg-to').value = c.config.to;
+    document.getElementById('cfg-code').value = c.config.code;
+    document.getElementById('cfg-deadline').value = c.config.deadline;
+    document.getElementById('cfg-channel').value = c.config.channel;
+    document.getElementById('cfg-note').value = c.config.note||'';
+    document.getElementById('cfg-count').value = c.posts.length;
+  } else {
+    document.getElementById('cfg-name').value='';
+    document.getElementById('cfg-brand').value='';
+    document.getElementById('cfg-from').value='C02-MKT-TRP';
+    document.getElementById('cfg-to').value='C02-MKT-PTP';
+    document.getElementById('cfg-code').value='MK03';
+    document.getElementById('cfg-deadline').value='';
+    document.getElementById('cfg-channel').value='Facebook Page';
+    document.getElementById('cfg-note').value='';
+    document.getElementById('cfg-count').value='9';
+  }
+  buildPostRows();
+  document.getElementById('setup-overlay').classList.add('show');
+}
+
+function closeSetup() {
+  document.getElementById('setup-overlay').classList.remove('show');
+}
+
+function buildPostRows() {
+  const count = parseInt(document.getElementById('cfg-count').value);
+  const container = document.getElementById('post-setup-rows');
+  container.innerHTML = '';
+  const perPhase = count/3;
+  const existing = editingCampaignId ? getCampaign(editingCampaignId)?.posts : null;
+
+  for(let i=0;i<count;i++){
+    const phIdx = Math.min(Math.floor(i/perPhase), 2);
+    const ph = PHASE_CFG[phIdx];
+    const localIdx = (i % perPhase)+1;
+    const existPost = existing?.[i];
+    const d = new Date(); d.setDate(d.getDate()+i*2);
+    const dateVal = existPost?.scheduledDate || d.toISOString().split('T')[0];
+    const timeVal = existPost?.scheduledTime || '08:00';
+    const hookVal = existPost?.hook || '';
+
+    const row = document.createElement('div');
+    row.className = 'post-setup-row';
+    row.innerHTML = `
+      <div class="post-num" style="color:${ph.color}">${i+1}</div>
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:${ph.dark};background:${ph.light};padding:2px 7px;border-radius:20px;display:inline-block;width:fit-content">${ph.name} · Bài ${localIdx}</span>
+        <input class="post-hook-inp" id="hook-${i}" placeholder="Hook bài ${i+1}..." value="${hookVal}">
+      </div>
+      <input class="finput" type="date" id="pdate-${i}" value="${dateVal}" style="font-size:12px">
+      <input class="finput" type="time" id="ptime-${i}" value="${timeVal}" style="font-size:12px">
+    `;
+    container.appendChild(row);
+  }
+}
+
+function createCampaign() {
+  const name = document.getElementById('cfg-name').value.trim();
+  const brand = document.getElementById('cfg-brand').value;
+  const deadline = document.getElementById('cfg-deadline').value;
+  const count = parseInt(document.getElementById('cfg-count').value);
+  let allHooks = true;
+  for(let i=0;i<count;i++) if(!document.getElementById(`hook-${i}`).value.trim()){allHooks=false;break;}
+  if(!name||!brand||!deadline||!allHooks){
+    const e=document.getElementById('err-msg'); e.style.display='block';
+    setTimeout(()=>e.style.display='none',3000); return;
+  }
+
+  const perPhase = count/3;
+  const posts = [];
+  for(let i=0;i<count;i++){
+    const phIdx = Math.min(Math.floor(i/perPhase),2);
+    posts.push({
+      id:i+1, phase:PHASE_CFG[phIdx].key,
+      hook: document.getElementById(`hook-${i}`).value.trim(),
+      scheduledDate: document.getElementById(`pdate-${i}`).value,
+      scheduledTime: document.getElementById(`ptime-${i}`).value,
+    });
+  }
+
+  const cfg = {
+    name, brand,
+    from: document.getElementById('cfg-from').value||'C02-MKT-TRP',
+    to:   document.getElementById('cfg-to').value||'C02-MKT-PTP',
+    code: document.getElementById('cfg-code').value||'MK03',
+    deadline, channel: document.getElementById('cfg-channel').value,
+    note: document.getElementById('cfg-note').value.trim(),
+    created: new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'})
+  };
+
+  if(editingCampaignId) {
+    const c = getCampaign(editingCampaignId);
+    c.config = cfg; c.posts = posts;
+  } else {
+    const newId = 'camp-'+Date.now();
+    campaigns.push({id:newId, config:cfg, posts, state:{}});
+    initCampaignState(newId);
+    activeCampaignId = newId;
+  }
+
+  closeSetup();
+  const targetId = editingCampaignId || activeCampaignId;
+  editingCampaignId = null;
+  openCampaign(targetId);
+}
+
+// ══════════════════════════════════
+// RENDER CALENDAR
+// ══════════════════════════════════
+function renderCalendar(id) {
+  const c = getCampaign(id);
+  const cfg = c.config;
+  const dlFmt = cfg.deadline ? new Date(cfg.deadline).toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'}) : '—';
+
+  document.getElementById('cal-topbar-title').textContent = cfg.name;
+  document.getElementById('cal-tag').textContent = `${cfg.code} · ${cfg.brand}`;
+  document.getElementById('cal-title').textContent = cfg.name;
+  document.getElementById('cal-sub').textContent = `Bàn giao ${cfg.from} → ${cfg.to} · Mốc kết thúc: ${dlFmt}`;
+  document.getElementById('cal-from').textContent = cfg.from;
+  document.getElementById('cal-to').textContent = cfg.to;
+  document.getElementById('cal-created').textContent = cfg.created||'—';
+  document.getElementById('cal-total').textContent = `${c.posts.length} bài`;
+  document.getElementById('cal-channel').textContent = cfg.channel;
+  document.getElementById('s-total').textContent = c.posts.length;
+  document.getElementById('s-phases').textContent = '3 giai đoạn';
+  document.getElementById('cal-footer').textContent = `KIYOSHI Group · ${cfg.brand} · Phòng Marketing C02-PMKT · ${cfg.code}`;
+
+  if(cfg.note){
+    document.getElementById('cal-warn').style.display='flex';
+    document.getElementById('cal-warn-txt').innerHTML=`<strong>Lưu ý:</strong> ${cfg.note}`;
+  } else {
+    document.getElementById('cal-warn').style.display='none';
+  }
+
+  // pills
+  const pillsWrap = document.getElementById('pills-wrap');
+  pillsWrap.innerHTML='';
+  c.posts.forEach(p=>{
+    const pill=document.createElement('div');
+    pill.className='pill'; pill.id=`pill-${p.id}`;
+    pill.style.background = PHASE_CFG.find(x=>x.key===p.phase).color;
+    pillsWrap.appendChild(pill);
+  });
+
+  // legend
+  const legend = document.getElementById('phase-legend');
+  legend.innerHTML='';
+  PHASE_CFG.forEach(ph=>{
+    legend.innerHTML+=`<span style="font-size:11px;color:${ph.color};display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:${ph.color};display:inline-block"></span>${ph.name} B${c.posts.filter(p=>p.phase===ph.key).map(p=>p.id).join('/')||'—'}</span>`;
+  });
+
+  // posts
+  const wrap = document.getElementById('posts-wrap');
+  wrap.innerHTML='';
+  let curPhase='';
+  c.posts.forEach(p=>{
+    const ph = PHASE_CFG.find(x=>x.key===p.phase);
+    const phPosts = c.posts.filter(x=>x.phase===p.phase);
+    if(p.phase!==curPhase){
+      curPhase=p.phase;
+      const sec=document.createElement('div');
+      sec.className='sec-title';
+      sec.textContent=`${ph.icon} ${ph.name} — Bài ${phPosts[0].id} → ${phPosts[phPosts.length-1].id}`;
+      wrap.appendChild(sec);
+    }
+    const chOpts=CHANNELS.map(ch=>`<option${ch===cfg.channel?' selected':''}>${ch}</option>`).join('');
+    const s = c.state[p.id];
+    const localIdx = phPosts.indexOf(p)+1;
+
+    const card=document.createElement('div');
+    card.className='post-card';
+    card.innerHTML=`
+      <div class="post-hd" onclick="toggleCard('${id}',${p.id})">
+        <span class="phase-dot dot-${p.phase}"></span>
+        <div style="min-width:0">
+          <div class="post-meta-lbl">${ph.name} · Bài ${localIdx}</div>
+          <div class="post-hook-txt">${p.hook}</div>
+        </div>
+        <select class="status-sel s-${s.status}" id="status-${id}-${p.id}" onclick="event.stopPropagation()" onchange="onStatus('${id}',${p.id},this)">
+          <option value="todo"${s.status==='todo'?' selected':''}>Chưa làm</option>
+          <option value="doing"${s.status==='doing'?' selected':''}>Đang làm</option>
+          <option value="done"${s.status==='done'?' selected':''}>Đã đăng</option>
+        </select>
+        <span class="chev" id="chev-${id}-${p.id}">▾</span>
+      </div>
+
+      <div class="post-body" id="body-${id}-${p.id}">
+
+        <!-- LỊCH ĐĂNG -->
+        <div class="fgroup">
+          <div class="flbl2">Lịch đăng kế hoạch</div>
+          <div class="fgrid" style="grid-template-columns:1fr 100px 1fr 1fr">
+            <div class="fgroup"><div class="flbl2">Ngày đăng</div><input class="fi" type="date" value="${p.scheduledDate}" onchange="updatePost('${id}',${p.id},'scheduledDate',this.value)"></div>
+            <div class="fgroup"><div class="flbl2">Giờ</div><input class="fi" type="time" value="${p.scheduledTime}" onchange="updatePost('${id}',${p.id},'scheduledTime',this.value)"></div>
+            <div class="fgroup"><div class="flbl2">Kênh đăng</div><select class="fi" onchange="updateState('${id}',${p.id},'channel',this.value)">${chOpts}</select></div>
+            <div class="fgroup"><div class="flbl2">Người thực hiện</div><input class="fi" type="text" value="${s.assignee}" placeholder="Tên CVN..." onchange="updateState('${id}',${p.id},'assignee',this.value)"></div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- NỘI DUNG BÀI VIẾT -->
+        <div class="fgroup">
+          <div class="flbl2">Nội dung bài viết <span style="font-size:11px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-tertiary)">— CVN copy & paste để đăng</span></div>
+          <div class="cb">
+            <div class="cb-head"><span class="cb-title">Caption / Body text</span><button class="btn-copy" onclick="doCopy('cap-${id}-${p.id}',this)">⎘ Copy</button></div>
+            <textarea class="cb-ta" id="cap-${id}-${p.id}" rows="5" placeholder="Dán nội dung caption bài viết vào đây..." onchange="updateState('${id}',${p.id},'caption',this.value)">${s.caption||''}</textarea>
+          </div>
+        </div>
+
+        <!-- MỞ RỘNG -->
+        <div class="fgroup">
+          <div class="flbl2">Nội dung mở rộng sau đăng</div>
+          <div class="xtabs">
+            <button class="xtab on" onclick="xTab('${id}',${p.id},'cmt',this)">💬 Cụm CMT</button>
+            <button class="xtab" onclick="xTab('${id}',${p.id},'reply',this)">↩ Reply</button>
+            <button class="xtab" onclick="xTab('${id}',${p.id},'hashtag',this)"># Hashtag</button>
+            <button class="xtab" onclick="xTab('${id}',${p.id},'story',this)">▶ Story/Reels</button>
+          </div>
+
+          <div class="xpanel on" id="xp-cmt-${id}-${p.id}">
+            ${[1,2,3].map(n=>`
+            <div class="cmt-item">
+              <div class="cmt-head"><span class="cmt-lbl">CMT ${n}</span><button class="btn-copy" onclick="doCopy('cmt${n}-${id}-${p.id}',this)">⎘ Copy</button></div>
+              <textarea class="cmt-ta" id="cmt${n}-${id}-${p.id}" placeholder="Nội dung comment ${n} soạn sẵn..." onchange="updateState('${id}',${p.id},'cmt${n}',this.value)">${s['cmt'+n]||''}</textarea>
+            </div>`).join('')}
+          </div>
+
+          <div class="xpanel" id="xp-reply-${id}-${p.id}">
+            <div style="background:var(--surface);border-radius:var(--r-sm);border:1px solid var(--sep);overflow:hidden">
+              ${[
+                {k:'rep0',trigger:'Hỏi giá / học phí'},
+                {k:'rep1',trigger:'Hỏi lịch khai giảng'},
+                {k:'rep2',trigger:'Hỏi địa điểm học'},
+                {k:'rep3',trigger:'Comment tiêu cực'},
+              ].map((r,i)=>`
+              <div class="reply-row" style="padding:10px 12px${i>0?';border-top:1px solid var(--sep)':''}">
+                <div>
+                  <div class="reply-trigger">${r.trigger}</div>
+                  <textarea class="fi" rows="2" placeholder="Mô tả tình huống..." style="font-size:12px;margin-top:4px"></textarea>
+                </div>
+                <div style="position:relative">
+                  <div style="font-size:11px;font-weight:500;color:var(--text-tertiary);margin-bottom:4px">Mẫu reply</div>
+                  <textarea class="fi" id="${r.k}-${id}-${p.id}" rows="3" placeholder="Nội dung reply mẫu..." style="font-size:12px;padding-right:48px" onchange="updateState('${id}',${p.id},'${r.k}',this.value)">${s[r.k]||''}</textarea>
+                  <button class="btn-copy" onclick="doCopy('${r.k}-${id}-${p.id}',this)" style="position:absolute;right:6px;top:24px;font-size:10px;padding:2px 7px">⎘</button>
+                </div>
+              </div>`).join('')}
+            </div>
+          </div>
+
+          <div class="xpanel" id="xp-hashtag-${id}-${p.id}">
+            <div class="ht-wrap">
+              <div class="ht-tags">
+                ${['#Kamiya','#KiyoshiGroup','#HoshiPhan','#HọcBếpNhật','#ChefKamiya','#TuyểnSinh2025','#NghềBếp','#OmakaseVN'].map(t=>`<button class="ht-tag" onclick="addHt('${id}',${p.id},'${t}',this)">${t}</button>`).join('')}
+              </div>
+              <textarea class="cb-ta" id="ht-${id}-${p.id}" rows="3" placeholder="Click tag gợi ý phía trên hoặc tự nhập bộ hashtag..." oninput="countHt('${id}',${p.id})" onchange="updateState('${id}',${p.id},'hashtag',this.value)">${s.hashtag||''}</textarea>
+              <div class="ht-footer">
+                <span style="font-size:11px;color:var(--text-tertiary)" id="htcount-${id}-${p.id}">0 hashtag</span>
+                <button class="btn-copy" onclick="doCopy('ht-${id}-${p.id}',this)">⎘ Copy tất cả</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="xpanel" id="xp-story-${id}-${p.id}">
+            <div class="fgrid" style="grid-template-columns:1fr 1fr">
+              <div class="cb">
+                <div class="cb-head"><span class="cb-title">Story</span><button class="btn-copy" onclick="doCopy('story-${id}-${p.id}',this)">⎘ Copy</button></div>
+                <textarea class="cb-ta" id="story-${id}-${p.id}" rows="4" placeholder="Text overlay Story (swipe up / DM)..." onchange="updateState('${id}',${p.id},'story',this.value)">${s.story||''}</textarea>
+              </div>
+              <div class="cb">
+                <div class="cb-head"><span class="cb-title">Script Reels / TikTok</span><button class="btn-copy" onclick="doCopy('reels-${id}-${p.id}',this)">⎘ Copy</button></div>
+                <textarea class="cb-ta" id="reels-${id}-${p.id}" rows="4" placeholder="Hook 3s + nội dung + CTA cuối..." onchange="updateState('${id}',${p.id},'reels',this.value)">${s.reels||''}</textarea>
+              </div>
+            </div>
+            <div class="fgroup">
+              <div class="flbl2">Nhạc nền đề xuất</div>
+              <input class="fi" value="${s.music||''}" placeholder="VD: trending TikTok / nhạc không lời Nhật..." onchange="updateState('${id}',${p.id},'music',this.value)">
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- SAU KHI ĐĂNG -->
+        <div class="fgroup">
+          <div class="flbl2">Sau khi đăng <span style="font-size:11px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-tertiary)">(CVN điền ngay sau publish)</span></div>
+          <div class="fgrid" style="grid-template-columns:1fr 120px">
+            <div class="fgroup"><div class="flbl2">Link bài đã đăng</div><input class="fi fi-link" type="url" value="${s.link||''}" placeholder="Dán link sau khi publish..." onchange="updateState('${id}',${p.id},'link',this.value);updateProgress('${id}')"></div>
+            <div class="fgroup"><div class="flbl2">Giờ đăng thực tế</div><input class="fi" type="time" value="${s.postedTime||''}" onchange="updateState('${id}',${p.id},'postedTime',this.value)"></div>
+          </div>
+        </div>
+
+        <div class="fgroup">
+          <div class="flbl2">Insight sau 24h <span style="font-size:11px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-tertiary)">(chụp screenshot + điền số)</span></div>
+          <div class="insight-grid">
+            <div class="fgroup"><div class="flbl2">Reach</div><input class="fi fi-num" type="number" value="${s.reach||''}" placeholder="0" onchange="updateState('${id}',${p.id},'reach',this.value)"></div>
+            <div class="fgroup"><div class="flbl2">Tương tác</div><input class="fi fi-num" type="number" value="${s.interact||''}" placeholder="0" onchange="updateState('${id}',${p.id},'interact',this.value)"></div>
+            <div class="fgroup"><div class="flbl2">Comment</div><input class="fi fi-num" type="number" value="${s.cmt||''}" placeholder="0" onchange="updateState('${id}',${p.id},'cmt',this.value)"></div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 3 VIỆC SAU ĐĂNG -->
+        <div>
+          <div class="cl-title">3 việc bắt buộc sau đăng</div>
+          <div class="cl-item">
+            <div class="chkbox${s.chk1?' checked':''}" id="chk-${id}-${p.id}-1" onclick="toggleChk('${id}',${p.id},1)"></div>
+            <div style="flex:1">
+              <div class="cl-name">Đăng cụm CMT soạn sẵn<span class="ob ob-cvn">CVN</span></div>
+              <div class="cl-desc">Đăng 3 CMT đã soạn ngay sau bài — trong vòng 30 phút sau publish.</div>
+              <textarea class="fi" rows="1" style="margin-top:6px" placeholder="Ghi chú..." onchange="updateState('${id}',${p.id},'noteChk1',this.value)">${s.noteChk1||''}</textarea>
+            </div>
+          </div>
+          <div class="cl-item">
+            <div class="chkbox${s.chk2?' checked':''}" id="chk-${id}-${p.id}-2" onclick="toggleChk('${id}',${p.id},2)"></div>
+            <div style="flex:1">
+              <div class="cl-name">Thả tim + reply 10 comment tích cực<span class="ob ob-cvn">CVN</span></div>
+              <div class="cl-desc">Like toàn bộ. Reply ít nhất 10 comment bằng emoji tích cực ❤️ 🙌 💪 — trong vòng 2 giờ.</div>
+              <textarea class="fi" rows="1" style="margin-top:6px" placeholder="Ghi chú..." onchange="updateState('${id}',${p.id},'noteChk2',this.value)">${s.noteChk2||''}</textarea>
+            </div>
+          </div>
+          <div class="cl-item">
+            <div class="chkbox${s.chk3?' checked':''}" id="chk-${id}-${p.id}-3" onclick="toggleChk('${id}',${p.id},3)"></div>
+            <div style="flex:1">
+              <div class="cl-name">Chụp + điền insight sau 24h<span class="ob ob-ptp">PTP xác nhận</span></div>
+              <div class="cl-desc">Sau đúng 24h — chụp screenshot insight và điền số ở ô trên. PTP tổng hợp báo cáo ROI.</div>
+              <textarea class="fi" rows="1" style="margin-top:6px" placeholder="Ghi chú sự cố..." onchange="updateState('${id}',${p.id},'noteChk3',this.value)">${s.noteChk3||''}</textarea>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    `;
+    wrap.appendChild(card);
+  });
+
+  updateProgress(id);
+
+  // init hashtag counts
+  c.posts.forEach(p=>{
+    const ta = document.getElementById(`ht-${id}-${p.id}`);
+    if(ta) countHt(id,p.id);
+  });
+}
+
+// ══════════════════════════════════
+// STATE HELPERS
+// ══════════════════════════════════
+function updateState(campId, postId, key, val) {
+  const c = getCampaign(campId);
+  if(c) c.state[postId][key] = val;
+}
+function updatePost(campId, postId, key, val) {
+  const c = getCampaign(campId);
+  const p = c.posts.find(x=>x.id===postId);
+  if(p) p[key]=val;
+  buildDeadlines(campId);
+}
+function onStatus(campId, postId, sel) {
+  updateState(campId, postId, 'status', sel.value);
+  sel.className='status-sel s-'+sel.value;
+  updateProgress(campId);
+}
+function toggleChk(campId, postId, n) {
+  const c = getCampaign(campId);
+  const key='chk'+n; c.state[postId][key]=!c.state[postId][key];
+  document.getElementById(`chk-${campId}-${postId}-${n}`).classList.toggle('checked',c.state[postId][key]);
+}
+function toggleCard(campId, postId) {
+  document.getElementById(`body-${campId}-${postId}`).classList.toggle('open');
+  document.getElementById(`chev-${campId}-${postId}`).classList.toggle('open');
+}
+
+function updateProgress(campId) {
+  const c = getCampaign(campId);
+  let done=0,doing=0,todo=0;
+  const phColors={'t':'#af52de','l':'#007aff','f':'#ff3b30'};
+  c.posts.forEach(p=>{
+    const s=c.state[p.id].status;
+    if(s==='done')done++; else if(s==='doing')doing++; else todo++;
+    const pill=document.getElementById(`pill-${p.id}`);
+    if(pill){ if(s==='done'){pill.classList.add('done');pill.style.background='';}
+      else{pill.classList.remove('done');pill.style.background=phColors[p.phase];pill.style.opacity='.3';}}
+  });
+  document.getElementById('s-done').textContent=done;
+  document.getElementById('s-doing').textContent=doing;
+  document.getElementById('s-todo').textContent=todo;
+  const pct=Math.round((done/c.posts.length)*100);
+  document.getElementById('pct-txt').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  buildDeadlines(campId);
+}
+
+function buildDeadlines(campId) {
+  const c = getCampaign(campId);
+  const strip=document.getElementById('dl-strip');
+  if(!strip)return;
+  strip.innerHTML='';
+  const today=new Date();today.setHours(0,0,0,0);
+  c.posts.forEach(p=>{
+    if(c.state[p.id].status==='done')return;
+    const d=new Date(p.scheduledDate);d.setHours(0,0,0,0);
+    const diff=Math.round((d-today)/86400000);
+    let cls,txt;
+    if(diff<0){cls='dl-late';txt=`Bài ${p.id} — Trễ ${Math.abs(diff)} ngày`;}
+    else if(diff===0){cls='dl-warn';txt=`Bài ${p.id} — Hôm nay!`;}
+    else if(diff<=2){cls='dl-warn';txt=`Bài ${p.id} — Còn ${diff} ngày`;}
+    else return;
+    const b=document.createElement('div');
+    b.className=`dl-badge ${cls}`;b.textContent=txt;
+    strip.appendChild(b);
+  });
+}
+
+// ── Tab, Copy, Hashtag ──
+function xTab(campId, postId, key, btn) {
+  ['cmt','reply','hashtag','story'].forEach(k=>{
+    const el=document.getElementById(`xp-${k}-${campId}-${postId}`);
+    if(el) el.classList.toggle('on',k===key);
+  });
+  btn.parentElement.querySelectorAll('.xtab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+function doCopy(elId, btn) {
+  const el=document.getElementById(elId);
+  if(!el)return;
+  const txt=el.value||el.textContent||'';
+  navigator.clipboard.writeText(txt).then(()=>{
+    const orig=btn.textContent; btn.textContent='✓ Đã copy'; btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=orig;btn.classList.remove('copied');},1800);
+  }).catch(()=>{ el.select&&el.select(); document.execCommand('copy'); });
+}
+function addHt(campId, postId, tag, btn) {
+  const ta=document.getElementById(`ht-${campId}-${postId}`);
+  const cur=ta.value.trim();
+  ta.value=cur?cur+' '+tag:tag;
+  countHt(campId,postId);
+  updateState(campId,postId,'hashtag',ta.value);
+  btn.style.background='var(--green)';btn.style.color='#fff';
+  setTimeout(()=>{btn.style.background='';btn.style.color='';},1000);
+}
+function countHt(campId, postId) {
+  const ta=document.getElementById(`ht-${campId}-${postId}`);
+  const el=document.getElementById(`htcount-${campId}-${postId}`);
+  if(!ta||!el)return;
+  const n=ta.value.trim().split(/\s+/).filter(w=>w.startsWith('#')).length;
+  el.textContent=`${n} hashtag`;
+}
+
+// ── INIT ──
+renderHome();
+</script>
+</body>
+</html>
